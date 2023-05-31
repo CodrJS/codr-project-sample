@@ -2,23 +2,20 @@ import { Error } from "@codrjs/models";
 import { Operation } from "@dylanbulmer/openapi/types/Route";
 import { R200, R401, R403, R500 } from "@dylanbulmer/openapi/classes/responses";
 import verifyJWT from "@/server/express/middlewares/verifyJWT";
-// import { UserGroupUtility } from "@/utils/UserGroupUtility";
+import { SampleUtility } from "@/utils/SampleUtility";
 
-const EntityName = "Unknown";
-const EntityType = "Unknown";
+const EntityName = "Sample";
+const EntityType = "Sample";
 
 export const GET: Operation = [
   /* business middleware not expressible by OpenAPI documentation goes here */
   verifyJWT,
   (req, res) => {
-    // const util = new UserGroupUtility();
-    // util
-    //   .get(req.user, req.params.userGroupId)
-    //   .then(resp => res.status(200).json(resp))
-    //   .catch((err: Error) => res.status(err.status).json(err));
-    res
-      .status(500)
-      .json(new Error({ status: 500, message: "Method not implemented." }));
+    const util = new SampleUtility();
+    util
+      .get(req.user, req.params.sampleId)
+      .then(resp => res.status(200).json(resp))
+      .catch((err: Error) => res.status(err.status).json(err));
   },
 ];
 
@@ -26,14 +23,11 @@ export const PATCH: Operation = [
   /* business middleware not expressible by OpenAPI documentation goes here */
   verifyJWT,
   (req, res) => {
-    // const util = new UserGroupUtility();
-    // util
-    //   .update(req.user, req.params.userGroupId, req.body)
-    //   .then(resp => res.status(200).json(resp))
-    //   .catch((err: Error) => res.status(err.status).json(err));
-    res
-      .status(500)
-      .json(new Error({ status: 500, message: "Method not implemented." }));
+    const util = new SampleUtility();
+    util
+      .update(req.user, req.params.sampleId, req.body)
+      .then(resp => res.status(200).json(resp))
+      .catch((err: Error) => res.status(err.status).json(err));
   },
 ];
 
@@ -41,14 +35,11 @@ export const DELETE: Operation = [
   /* business middleware not expressible by OpenAPI documentation goes here */
   verifyJWT,
   (req, res) => {
-    // const util = new UserGroupUtility();
-    // util
-    //   .delete(req.user, req.params.userGroupId)
-    //   .then(resp => res.status(200).json(resp))
-    //   .catch((err: Error) => res.status(err.status).json(err));
-    res
-      .status(500)
-      .json(new Error({ status: 500, message: "Method not implemented." }));
+    const util = new SampleUtility();
+    util
+      .delete(req.user, req.params.sampleId)
+      .then(resp => res.status(200).json(resp))
+      .catch((err: Error) => res.status(err.status).json(err));
   },
 ];
 

@@ -2,22 +2,20 @@ import { Error } from "@codrjs/models";
 import { Operation } from "@dylanbulmer/openapi/types/Route";
 import verifyJWT from "../../../middlewares/verifyJWT";
 import { R201, R401, R403, R500 } from "@dylanbulmer/openapi/classes/responses";
+import { SampleUtility } from "@/utils/SampleUtility";
 
-const EntityName = "Unknown";
-const EntityType = "Unknown";
+const EntityName = "Sample";
+const EntityType = "Sample";
 
 export const POST: Operation = [
   /* business middleware not expressible by OpenAPI documentation goes here */
   verifyJWT,
   (req, res) => {
-    // const util = new Utility();
-    // util
-    //   .create(req.user, req.body)
-    //   .then(resp => res.status(200).json(resp))
-    //   .catch((err: Error) => res.status(err.status).json(err));
-    res
-      .status(500)
-      .json(new Error({ status: 500, message: "Method not implemented." }));
+    const util = new SampleUtility();
+    util
+      .create(req.user, req.body)
+      .then(resp => res.status(200).json(resp))
+      .catch((err: Error) => res.status(err.status).json(err));
   },
 ];
 

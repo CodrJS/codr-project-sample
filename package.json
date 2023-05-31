@@ -1,14 +1,14 @@
 {
-  "name": "ts-microservice-template",
+  "name": "codr-project-sample",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "start": "node dist/serve.js",
     "build": "swc ./src -d dist",
     "clean": "rm -R dist/*",
     "test": "jest --config jest.config.json --passWithNoTests --coverage",
-    "docker:build": "docker build -t ts-microservice-template .",
-    "docker:run": "docker run --env-file=.env -p 8000:8000 ghcr.io/codrjs/ts-microservice-template:latest"
+    "docker:build": "docker build -t codr-project-sample .",
+    "docker:run": "docker run --env-file=.env -p 8000:8000 ghcr.io/codrjs/codr-project-sample:latest"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.62",

@@ -1,85 +1,27 @@
-# Kafka Micro-Service Template
+# Codr Sample Serivce
+
+[![CodeQL](https://github.com/CodrJS/codr-project-sample/actions/workflows/codeql.yml/badge.svg)](https://github.com/CodrJS/codr-project-sample/actions/workflows/codeql.yml)
+[![Docker Image CI](https://github.com/CodrJS/codr-project-sample/actions/workflows/docker-image.yml/badge.svg)](https://github.com/CodrJS/codr-project-sample/actions/workflows/docker-image.yml)
+
+## Purpose
+
+This microservice provides CRUD operations for the sample entity.
 
 ## Getting Started
 
-Click "Use this template" in Github, then "Create a new repository."
+To use this image, pull this image from the [Github Container Registry](https://github.com/CodrJS/codr-project-sample/pkgs/container/codr-project-sample).
 
-## Kafka
-
-Custom built consumer and producer classes can be imported from `@codrjs/kafka`.
-
-### Creating a producer
-
-```ts
-import { Producer } from "@codrjs/kafka";
-
-// this should be imported from "@codrjs/models"
-interface TestMessage {
-  hello: "world";
-}
-
-const Topic = "test-topic";
-const TestProducer = new Producer<TestMessage>(Topic);
-
-export default TestProducer;
+```bash
+docker pull ghcr.io/codrjs/codr-project-sample:latest
 ```
 
-### Creating a consumer
+### Producers
 
-```ts
-import type { KafkaMessage } from "kafkajs";
-import { Consumer } from "@codrjs/kafka";
+- [x] `codr.event.project.sample` - used for audit purposes.
 
-import dotenv from "dotenv";
-dotenv.config();
+### Consumers
 
-// this should be imported from "@codrjs/models"
-interface TestMessage {
-  hello: "world";
-}
-
-const Topic = "test-topic";
-const TopicGroup = process.env.KAFKA_CONSUMER_GROUP as string;
-
-// @ts-ignore
-const processor = function (payload: TestMessage, message: KafkaMessage) {
-  // do stuff here
-};
-
-const TestConsumer = new Consumer<TestMessage>({
-  processor,
-  groupId: TopicGroup,
-  topics: [Topic],
-});
-
-export default TestConsumer;
-```
-
-## Heath Checks
-
-The `@codrjs/kafka` module automatically adds the Kafka admin client and all producers and consumers to the health check.
-
-The only health checks that need to be added manually are for the express server and mongoose instance.
-
-```ts
-import { ServiceHealth } from "@codrjs/health";
-
-// for Express, add the following events to the appropriate handlers.
-//   This is done for you in this template.
-ServiceHealth.handleEvent("express", "connect");
-ServiceHealth.handleEvent("express", "disconnect");
-
-// for Mongoose, add the connection property to the health monitor
-import mongoose from "mongoose";
-
-const client = mongoose.connect(...);
-ServiceHealth.addMongo(client.connection);
-```
-
-## Mongo
-
-If mongo is not needed, but remove the `src/server/mongo/` folder and update the `src/server/index.ts`
-and `src/serve.ts` accordingly. Also remove the `src/types/index.d.ts` file.
+- [ ] None
 
 ## Environment
 
@@ -102,12 +44,29 @@ Environment variables provided by CI/CD
 | Env var           | Location           | Description                                               |
 | ----------------- | ------------------ | --------------------------------------------------------- |
 | `HOSTNAME`        | `hostname`         | Deployment docker hostname                                |
-| Provided via npm  | `name`             | Deployment service name - example: codr-user-user         |
+| Provided via npm  | `name`             | Deployment service name - example: codr-project-sample    |
 | Provided via npm  | `version`          | Deployment version - example: `1.0.0`                     |
 | `GIT_BRANCH`      | `git.brach`        | Git - branch                                              |
 | `GIT_COMMIT`      | `git.commit`       | Git - commit sha                                          |
 | `GIT_REPO`        | `git.repo`         | Git - repository                                          |
 | `NODE_ENV`        | `node.env`         | Node environment - `development`, `production`, `testing` |
 | Provided via npm  | `node.verison`     | Node version - example: `16.19.1`                         |
-| Provided via npm  | `node.modules`     | Node modules - string array of all dependencies           |
+| Provided via yarn | `node.modules`     | Node modules - string array of all dependencies           |
 | Provided via yarn | `node.yarnVersion` | Node - package manager version                            |
+
+## Contributing
+
+```bash
+# Clone the repo
+git clone git@github.com:CodrJS/codr-project-sample.git
+
+# Install yarn if you don't have it already
+npm install -g yarn
+
+# Install dependencies and build the code
+yarn install
+yarn build
+
+# Building the docker image
+yarn build:docker
+```
