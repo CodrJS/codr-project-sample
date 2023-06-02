@@ -21,9 +21,9 @@ export class SampleUtility extends Utility {
     } catch (err) {
       throw new Error({
         status: 500,
-        message: "Something went wrong when fetching profile",
+        message: "Something went wrong when fetching sample",
         details: {
-          profileId: id,
+          sampleId: id,
           error: err,
         },
       });
@@ -36,7 +36,7 @@ export class SampleUtility extends Utility {
     } catch (err) {
       throw new Error({
         status: 500,
-        message: "Something went wrong when fetching profile",
+        message: "Something went wrong when fetching sample",
         details: {
           userId,
           error: err,
@@ -46,82 +46,82 @@ export class SampleUtility extends Utility {
   }
 
   async get(token: JwtPayload, id: string) {
-    // get desired profile document
-    const profile = await this._getDocument<SampleDocument>(id);
+    // get desired sample document
+    const sample = await this._getDocument<SampleDocument>(id);
 
-    // if profile and read the document, send it, else throw error
-    if (SampleAbility(token).can("read", subject("Sample", profile))) {
+    // if sample and read the document, send it, else throw error
+    if (SampleAbility(token).can("read", subject("Sample", sample))) {
       return new Response({
         message: "OK",
         details: {
-          profile: new Sample(profile),
+          sample: new Sample(sample),
         },
       });
     } else {
       throw new Error({
         status: 403,
-        message: "User is forbidden from reading this profile.",
+        message: "User is forbidden from reading this sample.",
       });
     }
   }
 
   async getByUIserId(token: JwtPayload, userId: Types.ObjectId) {
     // get desired user document
-    const profile = await this._getDocumentByUserId<SampleDocument>(userId);
+    const sample = await this._getDocumentByUserId<SampleDocument>(userId);
 
     // if user and read the document, send it, else throw error
-    if (SampleAbility(token).can("read", subject("Sample", profile))) {
+    if (SampleAbility(token).can("read", subject("Sample", sample))) {
       return new Response({
         message: "OK",
         details: {
-          profile: new Sample(profile),
+          sample: new Sample(sample),
         },
       });
     } else {
       throw new Error({
         status: 403,
-        message: "User is forbidden from reading this profile.",
+        message: "User is forbidden from reading this sample.",
       });
     }
   }
 
   async create(token: JwtPayload, obj: ISample) {
-    // if profile can create profiles
+    // if sample can create samples
     if (SampleAbility(token).can("create", "Sample")) {
       try {
-        // create profile
-        const profile = await MongoSample.create(obj);
+        // create sample
+        const sample = await MongoSample.create(obj);
         return new Response({
           message: "OK",
           details: {
-            profile: new Sample(profile),
+            sample: new Sample(sample),
           },
         });
       } catch (e) {
         throw new Error({
           status: 500,
           message:
-            "An unexpected error occurred when trying to create a profile.",
+            "An unexpected error occurred when trying to create a sample.",
           details: e,
         });
       }
     } else {
       throw new Error({
         status: 403,
-        message: "User is forbidden from creating profiles.",
+        message: "User is forbidden from creating samples.",
       });
     }
   }
 
   async update(token: JwtPayload, id: string, obj: Partial<ISample>) {
-    // get desired profile document
-    const profile = await this._getDocument<SampleDocument>(id);
+    // get desired sample document
+    const sample = await this._getDocument<SampleDocument>(id);
 
     // check permissions
-    if (SampleAbility(token).can("update", subject("Sample", profile))) {
+    if (SampleAbility(token).can("update", subject("Sample", sample))) {
       try {
-        // update profile.
-        const profile = (await MongoSample.findByIdAndUpdate(id, obj, {
+        // update sample.
+        const sample = (await MongoSample.findByIdAndUpdate(id, obj, {
           returnDocument: "after",
         })) as SampleDocument;
 
@@ -129,27 +129,27 @@ export class SampleUtility extends Utility {
         return new Response({
           message: "OK",
           details: {
-            profile: new Sample(profile),
+            sample: new Sample(sample),
           },
         });
       } catch (e) {
         throw new Error({
           status: 500,
           message:
-            "An unexpected error occurred when trying to update a profile.",
+            "An unexpected error occurred when trying to update a sample.",
           details: e,
         });
       }
     } else {
       throw new Error({
         status: 403,
-        message: "User is forbidden from updating this profile.",
+        message: "User is forbidden from updating this sample.",
       });
     }
   }
 
   /**
-   * @todo Hard or soft delete profiles?
+   * @todo Hard or soft delete samples?
    */
   async delete(token: JwtPayload, id: string) {
     throw new Error({
@@ -161,7 +161,7 @@ export class SampleUtility extends Utility {
     return new Response({
       message: "OK",
       details: {
-        profile: undefined,
+        sample: undefined,
       },
     });
   }
